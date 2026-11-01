@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ulasan Google - Depgo</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect x='2' y='2' width='36' height='36' rx='10' fill='%234285F4'/%3E%3Cpath d='M20 9l3.1 6.9 7.4.7-5.6 5 1.6 7.3L20 25l-6.5 3.9 1.6-7.3-5.6-5 7.4-.7z' fill='white'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body class="biz-body">
+
+<div class="config-warning" id="config-warning" hidden>
+  <div class="container"><b>Config belum diisi.</b> Buka <span class="mono">assets/js/config.js</span> dan tempel Project URL + anon key dari Supabase. Lihat README.md.</div>
+</div>
+
+<main class="biz-wrap">
+  <div class="biz-brand">
+    <svg viewBox="0 0 40 40" width="28" height="28" aria-hidden="true"><rect x="2" y="2" width="36" height="36" rx="10" fill="#4285F4"/><path d="M20 9l3.1 6.9 7.4.7-5.6 5 1.6 7.3L20 25l-6.5 3.9 1.6-7.3-5.6-5 7.4-.7z" fill="#fff"/></svg>
+    <span>Depgo</span>
+  </div>
+
+  <section id="biz-loading" class="state-loading">
+    <div class="spinner"></div>
+    <p>Memuat halaman bisnis...</p>
+  </section>
+
+  <section id="biz-content" class="biz-card" hidden>
+    <div class="biz-avatar" id="biz-initial">B</div>
+    <h1 id="biz-name">Nama Bisnis</h1>
+    <p class="biz-addr" id="biz-addr"></p>
+    <div class="stars" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="#FBBC04"><path d="M12 2.5l2.9 6.2 6.8.6-5.2 4.6 1.5 6.7-6-3.6-6 3.6 1.5-6.7L2.3 9.3l6.8-.6z"/></svg>
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="#FBBC04"><path d="M12 2.5l2.9 6.2 6.8.6-5.2 4.6 1.5 6.7-6-3.6-6 3.6 1.5-6.7L2.3 9.3l6.8-.6z"/></svg>
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="#FBBC04"><path d="M12 2.5l2.9 6.2 6.8.6-5.2 4.6 1.5 6.7-6-3.6-6 3.6 1.5-6.7L2.3 9.3l6.8-.6z"/></svg>
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="#FBBC04"><path d="M12 2.5l2.9 6.2 6.8.6-5.2 4.6 1.5 6.7-6-3.6-6 3.6 1.5-6.7L2.3 9.3l6.8-.6z"/></svg>
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="#FBBC04"><path d="M12 2.5l2.9 6.2 6.8.6-5.2 4.6 1.5 6.7-6-3.6-6 3.6 1.5-6.7L2.3 9.3l6.8-.6z"/></svg>
+    </div>
+    <p class="biz-ask">Senang sekali jika Anda berkenan menuliskan ulasan untuk kami di Google. Ulasan Anda sangat berarti.</p>
+    <a id="review-link" class="btn btn-primary btn-block review-btn" target="_blank" rel="noopener">Review di Google</a>
+    <p class="tiny">Anda akan diarahkan ke halaman Google milik bisnis ini.</p>
+  </section>
+
+  <section id="biz-notfound" class="biz-card" hidden>
+    <div class="state-icon icon-gray">
+      <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+    </div>
+    <h1>Bisnis Tidak Ditemukan</h1>
+    <p class="biz-addr">Halaman yang Anda cari tidak tersedia atau sudah dinonaktifkan.</p>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/config.js"></script>
+<script src="/assets/js/depgo.js"></script>
+<script src="/assets/js/business.js"></script>
+</body>
+</html>
