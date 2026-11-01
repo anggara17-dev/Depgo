@@ -1,0 +1,6 @@
+# Depgo - URL rapi untuk Cloudflare Pages
+# File ini harus berada di ROOT repositori (sejajar dengan index.html)
+/k/* /k.html 200
+/b/* /b.html 200
+/admin /admin.html 200
+/stiker /stiker.html 200
