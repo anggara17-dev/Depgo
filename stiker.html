@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Stiker - Depgo</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect x='2' y='2' width='36' height='36' rx='10' fill='%234285F4'/%3E%3Cpath d='M20 9l3.1 6.9 7.4.7-5.6 5 1.6 7.3L20 25l-6.5 3.9 1.6-7.3-5.6-5 7.4-.7z' fill='white'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header no-print">
+  <div class="container header-inner">
+    <a class="brand" href="/">
+      <svg class="logo" viewBox="0 0 40 40" width="34" height="34" aria-hidden="true"><rect x="2" y="2" width="36" height="36" rx="10" fill="#4285F4"/><path d="M20 9l3.1 6.9 7.4.7-5.6 5 1.6 7.3L20 25l-6.5 3.9 1.6-7.3-5.6-5 7.4-.7z" fill="#fff"/></svg>
+      <span>Depgo</span>
+    </a>
+    <div class="header-actions">
+      <a class="btn btn-outline btn-sm" href="/admin.html">Dashboard</a>
+      <button class="btn btn-ghost btn-sm" id="logout-btn">Keluar</button>
+    </div>
+  </div>
+</header>
+
+<div class="config-warning no-print" id="config-warning" hidden>
+  <div class="container"><b>Config belum diisi.</b> Buka <span class="mono">assets/js/config.js</span> dan tempel Project URL + anon key dari Supabase. Lihat README.md.</div>
+</div>
+
+<main class="container">
+  <div class="page-head">
+    <h1>Generator Stiker</h1>
+    <div class="page-actions no-print">
+      <button class="btn btn-outline" id="btn-regenerate">Buat Ulang Kode</button>
+      <button class="btn btn-primary" id="btn-print">Cetak</button>
+    </div>
+  </div>
+
+  <div class="panel sticker-controls no-print">
+    <div class="grid-2">
+      <div class="field" style="margin-bottom:0">
+        <label for="stiker-domain">Domain Website</label>
+        <input class="input" id="stiker-domain" placeholder="https://depgo.pages.dev">
+        <div class="hint">QR akan mengarah ke <span class="mono">{domain}/k/KODE</span>. Isi domain final setelah website live di Cloudflare, lalu kode tersimpan otomatis.</div>
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label for="stiker-count">Jumlah Stiker (maks. 24)</label>
+        <input class="input" id="stiker-count" type="number" min="1" max="24" value="12">
+      </div>
+    </div>
+  </div>
+
+  <div class="sticker-sheet" id="sheet"></div>
+</main>
+
+<script type="module">
+  import * as QR from "https://cdn.jsdelivr.net/npm/qrcode@1.5.4/+esm";
+  window.QRCode = QR;
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/config.js"></script>
+<script src="/assets/js/depgo.js"></script>
+<script src="/assets/js/stiker.js"></script>
+</body>
+</html>
