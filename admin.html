@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin - Depgo</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect x='2' y='2' width='36' height='36' rx='10' fill='%234285F4'/%3E%3Cpath d='M20 9l3.1 6.9 7.4.7-5.6 5 1.6 7.3L20 25l-6.5 3.9 1.6-7.3-5.6-5 7.4-.7z' fill='white'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+
+<div class="config-warning" id="config-warning" hidden>
+  <div class="container"><b>Config belum diisi.</b> Buka <span class="mono">assets/js/config.js</span> dan tempel Project URL + anon key dari Supabase. Lihat README.md.</div>
+</div>
+
+<!-- ============ LOGIN ============ -->
+<section id="login-view" class="auth-wrap" hidden>
+  <div class="auth-card panel">
+    <div class="auth-head">
+      <div class="brand">
+        <svg class="logo" viewBox="0 0 40 40" width="36" height="36" aria-hidden="true"><rect x="2" y="2" width="36" height="36" rx="10" fill="#4285F4"/><path d="M20 9l3.1 6.9 7.4.7-5.6 5 1.6 7.3L20 25l-6.5 3.9 1.6-7.3-5.6-5 7.4-.7z" fill="#fff"/></svg>
+        <span>Depgo</span>
+      </div>
+      <h1>Masuk Admin</h1>
+      <p>Gunakan email &amp; password admin yang Anda buat di Supabase.</p>
+    </div>
+    <form id="login-form">
+      <div class="field">
+        <label for="login-email">Email</label>
+        <input class="input" type="email" id="login-email" required autocomplete="email" placeholder="admin@contoh.com">
+      </div>
+      <div class="field">
+        <label for="login-password">Password</label>
+        <input class="input" type="password" id="login-password" required autocomplete="current-password" placeholder="Password admin">
+      </div>
+      <button class="btn btn-primary btn-block" id="login-btn">Masuk</button>
+    </form>
+    <p class="tiny" style="margin-top:14px">Belum punya akun admin? Buat di Supabase: menu Authentication, lalu Users, lalu Add user. Langkah lengkap ada di README.md.</p>
+  </div>
+</section>
+
+<!-- ============ DASHBOARD ============ -->
+<div id="app-view" hidden>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/">
+        <svg class="logo" viewBox="0 0 40 40" width="34" height="34" aria-hidden="true"><rect x="2" y="2" width="36" height="36" rx="10" fill="#4285F4"/><path d="M20 9l3.1 6.9 7.4.7-5.6 5 1.6 7.3L20 25l-6.5 3.9 1.6-7.3-5.6-5 7.4-.7z" fill="#fff"/></svg>
+        <span>Depgo</span>
+      </a>
+      <div class="header-actions">
+        <a class="btn btn-outline btn-sm" href="/stiker.html">Stiker</a>
+        <button class="btn btn-ghost btn-sm" id="logout-btn">Keluar</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-head">
+      <h1>Dashboard</h1>
+      <div class="page-actions">
+        <button class="btn btn-outline" id="activate-btn">Aktivasi Kartu</button>
+        <button class="btn btn-primary" id="add-btn">+ Tambah Bisnis</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat panel"><div class="num" id="stat-total">0</div><div class="lbl">Total Bisnis</div></div>
+      <div class="stat panel"><div class="num" id="stat-active">0</div><div class="lbl">Kartu Aktif</div></div>
+      <div class="stat panel"><div class="num" id="stat-blank">0</div><div class="lbl">Belum Ada Kartu</div></div>
+    </div>
+
+    <div class="panel">
+      <div class="table-toolbar">
+        <input class="input search" id="search" placeholder="Cari bisnis, alamat, atau kode...">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Bisnis</th>
+              <th>Alamat</th>
+              <th>Kode Kartu</th>
+              <th>Status</th>
+              <th class="ta-r">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <div id="empty-state" class="empty" hidden>Belum ada bisnis. Klik "Tambah Bisnis" atau scan kartu kosong untuk memulai.</div>
+    </div>
+  </main>
+</div>
+
+<!-- ============ DIALOG TAMBAH/EDIT BISNIS ============ -->
+<div class="dialog" id="biz-dialog">
+  <div class="dialog-card">
+    <div class="dialog-head">
+      <h3 id="biz-dialog-title">Tambah Bisnis</h3>
+      <button type="button" class="x-btn" onclick="closeDialog('biz-dialog')">&times;</button>
+    </div>
+    <form id="biz-form">
+      <input type="hidden" id="biz-id">
+      <div class="field">
+        <label for="biz-name">Nama Bisnis *</label>
+        <input class="input" id="biz-name" required placeholder="Contoh: Salon Cantik Sejahtera">
+      </div>
+      <div class="field">
+        <label for="biz-address">Alamat</label>
+        <textarea class="input" id="biz-address" rows="2" placeholder="Contoh: Jl. Merdeka No. 10, Bandung"></textarea>
+      </div>
+      <div class="field">
+        <label for="biz-url">Link Google Review *</label>
+        <input class="input" id="biz-url" required placeholder="https://maps.app.goo.gl/...">
+        <div class="hint">Buka profil bisnis di Google Maps, ketuk Bagikan, lalu Salin link.</div>
+      </div>
+      <div class="field" id="card-field">
+        <label for="biz-card">Kode Kartu (opsional)</label>
+        <input class="input mono" id="biz-card" placeholder="DEP-ABC123">
+        <div class="hint">Isi hanya jika kartu/stiker sudah dicetak dengan kode ini.</div>
+      </div>
+      <div class="field" id="active-field" hidden>
+        <label class="check"><input type="checkbox" id="biz-active"> Bisnis aktif (tampil ke publik)</label>
+      </div>
+      <button class="btn btn-primary btn-block" id="biz-save">Simpan</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ DIALOG QR ============ -->
+<div class="dialog" id="qr-dialog">
+  <div class="dialog-card" style="text-align:center">
+    <div class="dialog-head">
+      <h3>QR Kartu</h3>
+      <button type="button" class="x-btn" onclick="closeDialog('qr-dialog')">&times;</button>
+    </div>
+    <img id="qr-img" width="220" height="220" alt="QR Code" style="margin:0 auto;display:block">
+    <div class="code big mono" id="qr-code"></div>
+    <div class="tiny" id="qr-url" style="margin:6px 0 16px;word-break:break-all"></div>
+    <a class="btn btn-outline btn-block" id="qr-download" download>Unduh PNG</a>
+  </div>
+</div>
+
+<script type="module">
+  import * as QR from "https://cdn.jsdelivr.net/npm/qrcode@1.5.4/+esm";
+  window.QRCode = QR;
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/config.js"></script>
+<script src="/assets/js/depgo.js"></script>
+<script src="/assets/js/admin.js"></script>
+</body>
+</html>
